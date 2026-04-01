@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: #f0ebe3;
+    color: #1a1512;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+}
+
+@layer components {
+  .label-caps {
+    @apply text-xs font-medium tracking-widest uppercase;
+  }
+  .btn-primary {
+    @apply px-8 py-3 text-sm font-medium text-white transition-opacity hover:opacity-85;
+    background: #8b4a2f;
+  }
+  .btn-secondary {
+    @apply px-6 py-3 text-sm font-medium transition-colors border;
+    border-color: #d4cdc4;
+    color: #6b6055;
+  }
+  .btn-secondary:hover { border-color: #6b6055; color: #1a1512; }
+
+  .q-card {
+    @apply bg-brand-white border p-6 mb-3;
+    border-color: #d4cdc4;
+  }
+  .opt-btn {
+    @apply w-full text-right px-4 py-3 text-sm border transition-all;
+    border-color: #d4cdc4;
+    background: transparent;
+    color: #1a1512;
+    font-family: 'Heebo', sans-serif;
+  }
+  .opt-btn:hover  { border-color: #8b4a2f; }
+  .opt-btn.active {
+    border-right-width: 4px;
+    border-color: #8b4a2f;
+    background: rgba(139,74,47,.06);
+    font-weight: 500;
+  }
+}
