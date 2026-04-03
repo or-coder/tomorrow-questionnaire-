@@ -7,7 +7,7 @@ export interface Question {
   showIf?: { id: string; values: string[] }
 }
 export interface Section { id: string; title: string; en: string; questions: Question[] }
-
+ 
 export const SECTIONS: Section[] = [
   {
     id: 'medical_bg', title: 'רקע רפואי', en: 'Medical Background',
@@ -56,9 +56,9 @@ export const SECTIONS: Section[] = [
         ]},
       { id:'qb2', text:'האם אתה מטופל בתרופות ללחץ דם?', type:'single',
         options:[
-          {label:'כן, ולחץ הדם מאוזן',     value:'treated_ok'},
-          {label:'כן, אך לחץ הדם לא מאוזן',value:'treated_uncontrolled'},
-          {label:'לא',                     value:'no'},
+          {label:'כן, ולחץ הדם מאוזן',      value:'treated_ok'},
+          {label:'כן, אך לחץ הדם לא מאוזן', value:'treated_uncontrolled'},
+          {label:'לא',                      value:'no'},
         ]},
       { id:'qb3', text:'האם חווית אחד מהבאים בחצי השנה האחרונה?', type:'multi',
         options:[
@@ -80,14 +80,44 @@ export const SECTIONS: Section[] = [
     ]
   },
   {
+    // FIX 1+2: הסבר ברור + hint מפורט לכל שאלה
     id: 'activity', title: 'פעילות גופנית', en: 'Physical Activity (IPAQ)',
     questions: [
-      { id:'q1', text:'ב-7 הימים האחרונים, כמה ימים פעילות מאומצת?', type:'number', min:0, max:7, placeholder:'0–7 ימים' },
-      { id:'q2', text:'כמה דקות בשבוע (מאומצת)?', type:'number', min:0, max:2000, placeholder:'דקות' },
-      { id:'q3', text:'ב-7 הימים האחרונים, כמה ימים פעילות מתונה?', type:'number', min:0, max:7, placeholder:'0–7 ימים' },
-      { id:'q4', text:'כמה דקות בשבוע (מתונה)?', type:'number', min:0, max:2000, placeholder:'דקות' },
-      { id:'q5', text:'ב-7 הימים האחרונים, כמה ימים הלכת?', type:'number', min:0, max:7, placeholder:'0–7 ימים' },
-      { id:'q6', text:'כמה דקות בשבוע (הליכה)?', type:'number', min:0, max:2000, placeholder:'דקות' },
+      {
+        id:'q1',
+        text:'כמה ימים בשבוע ביצעת פעילות מאומצת?',
+        hint:'פעילות מאומצת = נשימה כבדה ומאמץ גדול. לדוגמה: ריצה, שחייה מהירה, אופניים בעלייה, אימון כושר אינטנסיבי (HIIT), כדורסל, כדורגל.',
+        type:'number', min:0, max:7, placeholder:'מספר ימים (0–7)'
+      },
+      {
+        id:'q2',
+        text:'כמה דקות סך הכל בשבוע (פעילות מאומצת)?',
+        hint:'לדוגמה: רצת 30 דקות פעמיים השבוע = 60 דקות סך הכל.',
+        type:'number', min:0, max:2000, placeholder:'דקות בשבוע'
+      },
+      {
+        id:'q3',
+        text:'כמה ימים בשבוע ביצעת פעילות מתונה?',
+        hint:'פעילות מתונה = מאמץ בינוני, נשימה מעט מהירה אך אפשר לדבר. לדוגמה: הליכה מהירה, יוגה, פילאטס, אופניים בשטח שטוח, שחייה רגועה.',
+        type:'number', min:0, max:7, placeholder:'מספר ימים (0–7)'
+      },
+      {
+        id:'q4',
+        text:'כמה דקות סך הכל בשבוע (פעילות מתונה)?',
+        hint:'לדוגמה: הלכת 45 דקות שלוש פעמים = 135 דקות סך הכל.',
+        type:'number', min:0, max:2000, placeholder:'דקות בשבוע'
+      },
+      {
+        id:'q5',
+        text:'כמה ימים בשבוע הלכת לפחות 10 דקות ברצף?',
+        hint:'כולל הליכה לעבודה, קניות, טיול — כל עוד היה לפחות 10 דקות רצופות.',
+        type:'number', min:0, max:7, placeholder:'מספר ימים (0–7)'
+      },
+      {
+        id:'q6',
+        text:'כמה דקות סך הכל בשבוע הלכת?',
+        type:'number', min:0, max:2000, placeholder:'דקות בשבוע'
+      },
     ]
   },
   {
@@ -95,25 +125,33 @@ export const SECTIONS: Section[] = [
     questions: [
       { id:'q7', text:'סטטוס עישון', type:'single', options:[
         {label:'מעולם לא עישנתי',       value:'never'},
-        {label:'עישנתי בעבר ← הפסקתי', value:'former'},
+        {label:'עישנתי בעבר, הפסקתי',  value:'former'},
         {label:'מעשן/ת כיום',           value:'current'},
       ]},
-      { id:'q8', text:'האם שותה יותר מ-2 משקאות ביום (גברים) / מעל 1 (נשים)?', type:'single',
-        options:[{label:'כן', value:'yes'},{label:'לא', value:'no'}]},
+      {
+        // FIX 3: ציון מפורש שמדובר באלכוהול
+        id:'q8',
+        text:'צריכת אלכוהול — האם אתה שותה יותר מהמומלץ?',
+        hint:'גברים: יותר מ-2 משקאות ביום (או 14 בשבוע). נשים: יותר מ-1 משקה ביום (או 7 בשבוע). משקה = כוס יין, פחית בירה, או שוט.',
+        type:'single', options:[
+          {label:'לא, בתוך הגבולות המומלצים', value:'no'},
+          {label:'כן, שותה יותר מהמומלץ',     value:'yes'},
+        ]
+      },
     ]
   },
   {
     id: 'anthropometry', title: 'מדדים אנתרופומטריים', en: 'Anthropometric Measures (BMI)',
     questions: [
-      { id:'q9',  text:'משקל בק"ג',  type:'number', min:30,  max:300, placeholder:'ק"ג' },
-      { id:'q10', text:'גובה בס"מ',  type:'number', min:100, max:250, placeholder:'ס"מ' },
+      { id:'q9',  text:'משקל בק"ג',  type:'number', min:30,  max:300, placeholder:'לדוגמה: 75' },
+      { id:'q10', text:'גובה בס"מ',  type:'number', min:100, max:250, placeholder:'לדוגמה: 175' },
     ]
   },
   {
     id: 'nutrition', title: 'תזונה', en: 'Nutrition (24h Recall)',
     questions: [
       { id:'q11', text:'כמה ארוחות ביום?', type:'single', options:[
-        {label:'1–2',value:'1-2'},{label:'3–4',value:'3-4'},{label:'5+',value:'5+'}
+        {label:'1–2',value:'1-2'},{label:'3–4',value:'3-4'},{label:'5 ומעלה',value:'5+'}
       ]},
       { id:'q12', text:'כמה גרם חלבון ביום (בערך)?', type:'number', min:0, max:500, placeholder:'גרם',
         hint:'חזה עוף 150ג׳ ≈ 45ג׳ | ביצה ≈ 6ג׳ | קוטג׳ ≈ 15ג׳' },
@@ -138,61 +176,85 @@ export const SECTIONS: Section[] = [
   {
     id: 'sleep', title: 'שינה', en: 'Sleep (ISI)',
     questions: [
-      { id:'q16', text:'כמה שעות שינה בלילה?', type:'single', options:[
+      { id:'q16', text:'כמה שעות שינה בלילה בממוצע?', type:'single', options:[
         {label:'מעל 7 שעות',       value:'>7'},
         {label:'5–7 שעות',        value:'5-7'},
         {label:'מתחת ל-5 שעות',    value:'<5'},
       ]},
-      { id:'q17', text:'קושי להירדם',             type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
-      { id:'q18', text:'קושי להישאר ישן/ה',        type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
-      { id:'q19', text:'יקיצה מוקדמת',             type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
-      { id:'q20', text:'שביעות רצון מהשינה',       type:'scale', min:0, max:4, scaleLabels:{min:'מאוד מרוצה', max:'מאוד לא מרוצה'} },
-      { id:'q21', text:'הפרעה לתפקוד יומיומי',     type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
-      { id:'q22', text:'האם אחרים מבחינים?',        type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
-      { id:'q23', text:'מידת הדאגה מהשינה',         type:'scale', min:0, max:4, scaleLabels:{min:'אין כלל', max:'חמור מאוד'} },
+      // FIX 5+6: סקאלות מסכים/לא מסכים, הצד "הבריא" תמיד שמאל (0)
+      { id:'q17', text:'אני מתקשה להירדם בלילה', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q18', text:'אני מתעורר/ת באמצע הלילה ומתקשה לחזור לישון', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q19', text:'אני מתעורר/ת מוקדם מדי בבוקר', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q20', text:'אני מרוצה מדפוס השינה שלי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q21', text:'בעיות השינה שלי משפיעות לרעה על התפקוד היומיומי שלי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q22', text:'אחרים מבחינים בבעיות השינה שלי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q23', text:'בעיות השינה שלי מדאיגות אותי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
     ]
   },
   {
     id: 'circadian', title: 'יציבות צירקדיאנית', en: 'Circadian Stability',
     questions: [
-      { id:'q24', text:'כמה טיסות בינלאומיות בשנה?', type:'single', options:[
-        {label:'0–4',value:'0-4'},{label:'5–9',value:'5-9'},{label:'10+',value:'10+'}
+      { id:'q24', text:'כמה טיסות בינלאומיות (עם הפרש שעות) ביצעת בשנה האחרונה?', type:'single', options:[
+        {label:'0–4 טיסות',    value:'0-4'},
+        {label:'5–9 טיסות',   value:'5-9'},
+        {label:'10+ טיסות',   value:'10+'},
       ]},
-      { id:'q25', text:'עבודה במשמרות?', type:'single', options:[
-        {label:'כן',value:'yes'},{label:'לא',value:'no'}
+      { id:'q25', text:'האם אתה עובד במשמרות לילה?', type:'single', options:[
+        {label:'לא',value:'no'},{label:'כן',value:'yes'},
       ]},
-      { id:'q26', text:'אחידות שעות שינה (ימי שבוע vs. סוף שבוע)?', type:'single', options:[
-        {label:'זהות',                value:'same'},
-        {label:'שינוי שעה',           value:'1h'},
-        {label:'שינוי 1–2 שעות',      value:'1-2h'},
-        {label:'שינוי מעל 2 שעות',    value:'>2h'},
+      { id:'q26', text:'שעות השינה והיקיצה שלי זהות בין ימי חול לסוף שבוע', type:'single', options:[
+        {label:'כן, זהות לחלוטין',    value:'same'},
+        {label:'הפרש של עד שעה',      value:'1h'},
+        {label:'הפרש של 1–2 שעות',    value:'1-2h'},
+        {label:'הפרש של מעל 2 שעות',  value:'>2h'},
       ]},
-      { id:'q27', text:'זמן הפסקת מסכים לפני שינה?', type:'single', options:[
-        {label:'יותר משעתיים',         value:'>2h'},
-        {label:'שעה–שעתיים',          value:'1-2h'},
-        {label:'30 דקות–שעה',         value:'30m-1h'},
-        {label:'עד 30 דקות',          value:'<30m'},
-        {label:'עד הרגע שנרדמתי',     value:'none'},
+      { id:'q27', text:'כמה זמן לפני השינה אני מפסיק להשתמש במסכים (טלפון, מחשב, טלוויזיה)?', type:'single', options:[
+        {label:'יותר משעתיים לפני השינה',  value:'>2h'},
+        {label:'שעה עד שעתיים לפני',       value:'1-2h'},
+        {label:'חצי שעה עד שעה לפני',      value:'30m-1h'},
+        {label:'עד חצי שעה לפני',          value:'<30m'},
+        {label:'עד הרגע שנרדמתי',          value:'none'},
       ]},
     ]
   },
   {
     id: 'qol_stress', title: 'איכות חיים ולחץ', en: 'Quality of Life & Stress (PSS-10)',
     questions: [
-      { id:'q28', text:'איכות חיים כוללת', type:'single', options:[
-        {label:'מצוינת',value:'excellent'},{label:'טובה מאוד',value:'very_good'},
-        {label:'טובה',value:'good'},{label:'בינונית',value:'fair'},{label:'גרועה',value:'poor'},
+      { id:'q28', text:'באופן כללי, איכות חיי היא:', type:'single', options:[
+        {label:'מצוינת',    value:'excellent'},
+        {label:'טובה מאוד', value:'very_good'},
+        {label:'טובה',      value:'good'},
+        {label:'בינונית',   value:'fair'},
+        {label:'גרועה',     value:'poor'},
       ]},
-      { id:'q29', text:'לא יכולת לשלוט בדברים חשובים?',         type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q30', text:'הרגשת ביטחון בטיפול בבעיות? ↩',          type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q31', text:'הרגשת שדברים מתנהלים כרצונך? ↩',         type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q32', text:'הרגשת שקשיים נערמים?',                    type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q33', text:'הרגשת עצבני/לחוץ?',                       type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q34', text:'התמודדת ביעילות עם שינויים? ↩',            type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q35', text:'שלטת במצבים של כעס? ↩',                   type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q36', text:'לא יכולת להתמודד עם כל המשימות?',          type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q37', text:'כעסת על דברים מחוץ לשליטתך?',             type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
-      { id:'q38', text:'הרגשת שאתה שולט במצבים? ↩',               type:'scale', min:0, max:4, scaleLabels:{min:'לעולם לא', max:'לעיתים קרובות מאוד'} },
+      // FIX 5+6: PSS-10 — ניסוח "אני מרגיש..." + סקאלה אחידה
+      { id:'q29', text:'אני מרגיש שאיני שולט בדברים החשובים בחיי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q30', text:'אני מרגיש ביטחון ביכולתי לטפל בבעיות האישיות שלי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q31', text:'הדברים מתנהלים כרצוני', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q32', text:'אני מרגיש שהקשיים נערמים עד שאיני יכול להתגבר עליהם', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q33', text:'אני מרגיש עצבני ולחוץ', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q34', text:'אני מתמודד ביעילות עם שינויים חשובים בחיי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q35', text:'אני מצליח לשלוט במצבים שמעוררים בי כעס', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q36', text:'אני מרגיש שאיני מסוגל להתמודד עם כל המשימות המוטלות עלי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q37', text:'אני מרגיש כעס על דברים שקרו ומחוץ לשליטתי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
+      { id:'q38', text:'אני מרגיש שאני שולט במצבים בחיי', type:'scale', min:0, max:4,
+        scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
     ]
   },
 ]
