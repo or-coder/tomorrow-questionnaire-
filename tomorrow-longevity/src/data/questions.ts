@@ -129,7 +129,6 @@ export const SECTIONS: Section[] = [
         {label:'מעשן/ת כיום',           value:'current'},
       ]},
       {
-        // FIX 3: ציון מפורש שמדובר באלכוהול
         id:'q8',
         text:'כמה משקאות אלכוהוליים אתה שותה בממוצע ביום?',
         hint:'משקה = כוס יין (150מ"ל) / פחית בירה / שוט של משקה חריף',
@@ -140,6 +139,9 @@ export const SECTIONS: Section[] = [
           {label:'3 ומעלה ביום',         value:'yes'},
         ]
       },
+    ]
+  },
+  {
     id: 'anthropometry', title: 'מדדים אנתרופומטריים', en: 'Anthropometric Measures (BMI)',
     questions: [
       { id:'q9',  text:'משקל בק"ג',  type:'number', min:30,  max:300, placeholder:'לדוגמה: 75' },
