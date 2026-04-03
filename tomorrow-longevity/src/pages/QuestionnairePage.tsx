@@ -144,15 +144,15 @@ export default function QuestionnairePage() {
         <div style={{width:'100%'}}>
           {/* תוויות */}
           <div style={{display:'flex',justifyContent:'space-between',marginBottom:'8px'}}>
-            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'left',maxWidth:'40%'}}>
+            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'right'}}>
               {q.scaleLabels?.min}
             </span>
-            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'right',maxWidth:'40%'}}>
+            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'left'}}>
               {q.scaleLabels?.max}
             </span>
           </div>
-          {/* כפתורים */}
-          <div style={{display:'flex',gap:'6px',direction:'ltr'}}>
+          {/* כפתורים — 0 מימין, 4 משמאל, כיוון RTL */}
+          <div style={{display:'flex',gap:'6px',direction:'rtl'}}>
             {[0,1,2,3,4].map(n => (
               <button key={n} onClick={() => set(q.id, n)}
                 style={{
