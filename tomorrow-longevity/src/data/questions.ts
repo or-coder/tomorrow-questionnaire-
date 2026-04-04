@@ -187,7 +187,7 @@ export const SECTIONS: Section[] = [
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
       { id:'q18', text:'אני מתעורר/ת באמצע הלילה ומתקשה לחזור לישון', type:'scale', min:0, max:4,
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
-      { id:'q19', text:'אני מתעורר/ת מוקדם מדי בבוקר', type:'scale', min:0, max:4,
+      { id:'q19', text:'אני מתעורר/ת מוקדם מדי בבוקר - קיצה מוקדמת', type:'scale', min:0, max:4,
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
       { id:'q20', text:'אני מרוצה מדפוס השינה שלי', type:'scale', min:0, max:4,
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
