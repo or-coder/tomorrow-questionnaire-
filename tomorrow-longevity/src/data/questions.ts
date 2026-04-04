@@ -133,10 +133,10 @@ export const SECTIONS: Section[] = [
         text:'כמה משקאות אלכוהוליים אתה שותה בממוצע ביום?',
         hint:'משקה = כוס יין (150מ"ל) / פחית בירה / שוט של משקה חריף',
         type:'single', options:[
-          {label:'לא שותה אלכוהול כלל',  value:'no'},
-          {label:'1 משקה ביום',          value:'1'},
-          {label:'2 משקאות ביום',        value:'2'},
-          {label:'3 ומעלה ביום',         value:'yes'},
+  {label:'לא שותה אלכוהול כלל',        value:'no'},
+  {label:'מדי פעם',    value:'occasional'},
+  {label:'1–2 משקאות ביום',            value:'1-2'},
+  {label:'3 ומעלה ביום',               value:'yes'},
         ]
       },
     ]
