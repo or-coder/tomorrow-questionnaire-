@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'
 import { DOMAIN_META, calculateScores } from '@/utils/scoring'
 import type { Answers, Scores, Flag } from '@/utils/scoring'
-
+ 
 interface Submission {
   id: string; name: string; age: string; gender: string
   created_at: string; answers: Answers
@@ -13,15 +13,13 @@ interface Submission {
   score_circadian: number; score_qol: number; score_stress: number
   bmi_value?: number
 }
-
+ 
 function riskLabel(v: number) {
-  if (v >= 85) return { txt:'סיכון נמוך',       bg:'#f0fff4', tc:'#276749' }
-  if (v >= 70) return { txt:'בינוני-נמוך',       bg:'#f7fee7', tc:'#3f6212' }
-  if (v >= 55) return { txt:'בינוני',            bg:'#fffbeb', tc:'#92400e' }
-  if (v >= 40) return { txt:'בינוני-גבוה',       bg:'#fff7ed', tc:'#9a3412' }
-  return             { txt:'סיכון גבוה',         bg:'#fff5f5', tc:'#991b1b' }
+  if (v >= 81) return { txt:'טוב',        bg:'#f0fff4', tc:'#276749' }  // ירוק
+  if (v >= 51) return { txt:'בינוני',     bg:'#fff7ed', tc:'#c05621' }  // כתום
+  return             { txt:'דורש שיפור',  bg:'#fff5f5', tc:'#991b1b' }  // אדום
 }
-
+ 
 export default function ReportPage() {
   const { id } = useParams<{id:string}>()
   const [sub, setSub] = useState<Submission | null>(null)
@@ -31,9 +29,9 @@ export default function ReportPage() {
   const radarRef  = useRef<HTMLCanvasElement>(null)
   const ringRef   = useRef<HTMLCanvasElement>(null)
   const polledRef = useRef(false)
-
+ 
   useEffect(() => { fetch() }, [id])
-
+ 
   async function fetch() {
     const { data } = await supabase.from('submissions').select('*').eq('id', id).single()
     if (data) {
@@ -45,7 +43,7 @@ export default function ReportPage() {
       if (!data.ai_insights && !polledRef.current) pollForInsights(data.id)
     }
   }
-
+ 
   async function pollForInsights(sid: string) {
     polledRef.current = true
     for (let i = 0; i < 20; i++) {
@@ -54,13 +52,13 @@ export default function ReportPage() {
       if (data?.ai_insights) { setAiInsights(data.ai_insights); break }
     }
   }
-
+ 
   useEffect(() => {
     if (!sub || !localScores) return
     drawRing(ringRef.current, sub.score_composite)
     drawRadar(radarRef.current, localScores)
   }, [sub, localScores])
-
+ 
   function drawRing(c: HTMLCanvasElement | null, score: number) {
     if (!c) return
     const ctx = c.getContext('2d')!
@@ -80,7 +78,7 @@ export default function ReportPage() {
     ctx.font = 'bold 10px Heebo,sans-serif'; ctx.fillStyle = lbl.tc
     ctx.fillText(lbl.txt, cx, cy+30)
   }
-
+ 
   function drawRadar(c: HTMLCanvasElement | null, sc: Scores) {
     if (!c) return
     const ctx = c.getContext('2d')!
@@ -127,7 +125,7 @@ export default function ReportPage() {
       ctx.fillText(String((sc as any)[d.key]),lx,ly+14)
     })
   }
-
+ 
   function exportCSV() {
     if (!sub || !localScores) return
     const row = [
@@ -148,18 +146,18 @@ export default function ReportPage() {
     a.download = `tomorrow-${sub.name}-${new Date().toISOString().slice(0,10)}.csv`
     a.click()
   }
-
+ 
   if (loading) return (
     <div className="min-h-screen bg-brand-dark flex items-center justify-center">
       <p className="text-white/50 font-body">טוען דוח...</p>
     </div>
   )
   if (!sub || !localScores) return null
-
+ 
   const composite = sub.score_composite
   const lbl = riskLabel(composite)
   const flags = localScores.flags
-
+ 
   return (
     <div className="min-h-screen bg-brand-cream">
       {/* Hero */}
@@ -174,9 +172,9 @@ export default function ReportPage() {
           <canvas ref={ringRef} width={180} height={180} />
         </div>
       </div>
-
+ 
       <div className="max-w-3xl mx-auto px-4 py-10">
-
+ 
         {/* Domain grid */}
         <h3 className="font-serif text-xl mb-5 flex items-center gap-3">
           📊 ציוני דומיינים
@@ -201,7 +199,7 @@ export default function ReportPage() {
             )
           })}
         </div>
-
+ 
         {/* Radar */}
         <h3 className="font-serif text-xl mb-5 flex items-center gap-3">
           🕸 מפת דומיינים
@@ -210,7 +208,7 @@ export default function ReportPage() {
         <div className="bg-brand-white border border-brand-border p-6 flex justify-center mb-10">
           <canvas ref={radarRef} width={380} height={320} />
         </div>
-
+ 
         {/* Flags */}
         <h3 className="font-serif text-xl mb-5 flex items-center gap-3">
           {flags.length > 0 ? `🚨 דגלים קליניים (${flags.length})` : '✅ דגלים קליניים'}
@@ -228,7 +226,7 @@ export default function ReportPage() {
             <p className="text-xs text-brand-soft">{f.body}</p>
           </div>
         ))}
-
+ 
         {/* AI Insights */}
         <div className="bg-brand-dark overflow-hidden my-10">
           <div className="px-7 py-5 border-b border-white/5 flex items-center gap-4">
@@ -262,7 +260,7 @@ export default function ReportPage() {
             )}
           </div>
         </div>
-
+ 
         {/* Action bar */}
         <div className="flex gap-3 flex-wrap">
           <button onClick={() => window.print()}
@@ -282,7 +280,7 @@ export default function ReportPage() {
           </a>
         </div>
       </div>
-
+ 
       <style>{`
         @keyframes pulse { 0%,100%{opacity:.2;transform:scale(.8)} 50%{opacity:1;transform:scale(1.1)} }
         @media print { .flex.gap-3.flex-wrap { display:none; } }
@@ -290,3 +288,4 @@ export default function ReportPage() {
     </div>
   )
 }
+ 
