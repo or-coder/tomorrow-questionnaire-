@@ -4,7 +4,8 @@ import QuestionnairePage from './pages/QuestionnairePage'
 import LoadingPage      from './pages/LoadingPage'
 import ReportPage       from './pages/ReportPage'
 import DashboardPage    from './pages/DashboardPage'
-
+import ThankYouPage     from './pages/ThankYouPage'
+ 
 export default function App() {
   return (
     <BrowserRouter>
@@ -14,7 +15,9 @@ export default function App() {
         <Route path="/loading"       element={<LoadingPage />} />
         <Route path="/report/:id"    element={<ReportPage />} />
         <Route path="/dashboard"     element={<DashboardPage />} />
+        <Route path="/thankyou"      element={<ThankYouPage />} />
       </Routes>
     </BrowserRouter>
   )
 }
+ 
