@@ -483,4 +483,204 @@ export const SECTIONS: Section[] = [
       },
     ]
   },
+ 
+  // ─── 15. בריאות האישה (מוצג רק לנשים) ──────────────────
+  // הסקציה מסוננת ב-QuestionnairePage לפי gender === 'female'
+  {
+    id: 'womens_health', title: 'בריאות האישה', en: "Women's Health",
+    questions: [
+ 
+      // ── א. בסיס — כולן ────────────────────────────────────
+ 
+      {
+        id:'wh_menstrual_status',
+        text:'מה הסטטוס הנוכחי של המחזור החודשי שלך?',
+        type:'single', options:[
+          {label:'מחזור סדיר',                       value:'regular'},
+          {label:'מחזור לא סדיר',                    value:'irregular'},
+          {label:'אמנוראה (אין מחזור, לא בהריון)',    value:'amenorrhea'},
+          {label:'פרי-מנופאוזה (שינויים בדפוס)',      value:'perimenopause'},
+          {label:'לאחר גיל המעבר (מנופאוזה)',         value:'menopause'},
+        ]
+      },
+ 
+      {
+        id:'wh_gyneco_history',
+        text:'האם אובחנת באחד מהמצבים הגינקולוגיים הבאים?',
+        type:'multi', options:[
+          {label:'PCOS (תסמונת שחלות פוליציסטיות)',   value:'pcos'},
+          {label:'אנדומטריוזיס',                      value:'endo'},
+          {label:'פיברומיומות (שרירנים)',              value:'fibroids'},
+          {label:'ציסטות שחלה',                       value:'cysts'},
+          {label:'אי-סדירות הורמונלית אחרת',          value:'hormonal'},
+          {label:'לא אובחנתי באף מהנ"ל',              value:'none'},
+        ]
+      },
+ 
+      {
+        id:'wh_hormonal_meds',
+        text:'האם את נוטלת / נטלת בעבר תרופות הורמונליות?',
+        type:'multi', options:[
+          {label:'גלולות למניעת הריון (כיום)',         value:'pill_current'},
+          {label:'גלולות בעבר (לא כיום)',              value:'pill_past'},
+          {label:'התקן הורמונלי (מירנה וכד\')',        value:'iud_hormonal'},
+          {label:'טיפול הורמונלי חלופי HRT (כיום)',    value:'hrt_current'},
+          {label:'טיפול הורמונלי חלופי HRT (בעבר)',    value:'hrt_past'},
+          {label:'לא נטלתי',                           value:'none'},
+        ]
+      },
+ 
+      {
+        id:'wh_clotting',
+        text:'האם יש לך היסטוריה של בעיות קרישה?',
+        hint:'רלוונטי במיוחד לנשים הנוטלות הורמונים.',
+        type:'multi', options:[
+          {label:'קריש דם בורידים (DVT)',              value:'dvt'},
+          {label:'תסחיף ריאתי (PE)',                   value:'pe'},
+          {label:'בעיית קרישה גנטית (Factor V וכד\')', value:'genetic'},
+          {label:'הפלות חוזרות (3 ומעלה)',             value:'recurrent_loss'},
+          {label:'אין היסטוריה ידועה',                 value:'none'},
+        ]
+      },
+ 
+      {
+        id:'wh_screening',
+        text:'מתי בוצעו בדיקות הסקר האחרונות שלך?',
+        hint:'סמני את כל הרלוונטי.',
+        type:'multi', options:[
+          {label:'ממוגרפיה — עד שנה',                  value:'mammo_1y'},
+          {label:'ממוגרפיה — 1–3 שנים',                value:'mammo_3y'},
+          {label:'ממוגרפיה — מעל 3 שנים / לא בוצע',    value:'mammo_none'},
+          {label:'פאפ סמיר — עד שנה',                  value:'pap_1y'},
+          {label:'פאפ סמיר — 1–3 שנים',                value:'pap_3y'},
+          {label:'פאפ סמיר — מעל 3 שנים / לא בוצע',    value:'pap_none'},
+          {label:'DEXA (צפיפות עצם) — בוצע',           value:'dexa_done'},
+          {label:'DEXA — לא בוצע',                     value:'dexa_none'},
+        ]
+      },
+ 
+      // ── ב. שנות הפוריות — גיל 18–45 ──────────────────────
+      // מסוננות ב-QuestionnairePage לפי age <= 45
+ 
+      {
+        id:'wh_pregnancy_history',
+        text:'היסטוריית הריון',
+        hint:'גיל 18–45',
+        type:'single', options:[
+          {label:'מעולם לא הייתי בהריון',              value:'never'},
+          {label:'הריון אחד או יותר שהסתיים בלידה',    value:'birth'},
+          {label:'הפלה אחת או יותר (ספונטנית)',        value:'miscarriage'},
+          {label:'הפלה מלאכותית',                      value:'termination'},
+          {label:'שילוב של האמור לעיל',                value:'mixed'},
+        ]
+      },
+ 
+      {
+        id:'wh_fertility',
+        text:'האם נתקלת בקשיי פוריות?',
+        hint:'גיל 18–45',
+        type:'single', options:[
+          {label:'לא ניסיתי להרות',                    value:'not_trying'},
+          {label:'ניסיתי והרתי ללא קושי',              value:'no_issue'},
+          {label:'קשיי פוריות — מטופלת / מטופלת בעבר', value:'treated'},
+          {label:'קשיי פוריות — לא מטופלת',            value:'untreated'},
+        ]
+      },
+ 
+      {
+        id:'wh_period_pain',
+        text:'כיצד תתארי את הכאב במהלך המחזור?',
+        hint:'גיל 18–45',
+        type:'single', options:[
+          {label:'ללא כאב',                            value:'none'},
+          {label:'כאב קל — לא מפריע לתפקוד',          value:'mild'},
+          {label:'כאב בינוני — לוקחת משככי כאבים',     value:'moderate'},
+          {label:'כאב חמור — מפריע לתפקוד היומיומי',   value:'severe'},
+        ]
+      },
+ 
+      {
+        id:'wh_bleeding',
+        text:'כמות הדימום במחזור',
+        hint:'גיל 18–45',
+        type:'single', options:[
+          {label:'קל',     value:'light'},
+          {label:'בינוני', value:'moderate'},
+          {label:'כבד',    value:'heavy'},
+          {label:'משתנה',  value:'variable'},
+        ]
+      },
+ 
+      // ── ג. פרי-מנופאוזה — גיל 45–55 ──────────────────────
+ 
+      {
+        id:'wh_meno_symptoms',
+        text:'אילו תסמיני גיל המעבר את חווה?',
+        hint:'גיל 45–55',
+        type:'multi', options:[
+          {label:'גלי חום',                            value:'hot_flashes'},
+          {label:'הזעות לילה',                         value:'night_sweats'},
+          {label:'שינויים במצב רוח / עצבנות',          value:'mood'},
+          {label:'קשיי שינה',                          value:'sleep'},
+          {label:'יובש בנרתיק / כאב ביחסים',          value:'vaginal_dry'},
+          {label:'ירידה בחשק המיני',                   value:'libido'},
+          {label:'ערפל מוחי / קשיי ריכוז',             value:'brain_fog'},
+          {label:'אינני חווה תסמינים',                  value:'none'},
+        ]
+      },
+ 
+      {
+        id:'wh_cycle_changes',
+        text:'כיצד השתנה המחזור בשנה האחרונה?',
+        hint:'גיל 45–55',
+        type:'single', options:[
+          {label:'לא השתנה',                           value:'same'},
+          {label:'הפך לא סדיר',                        value:'irregular'},
+          {label:'דימום כבד יותר',                     value:'heavier'},
+          {label:'דימום קל יותר / נדיר',               value:'lighter'},
+          {label:'הפסיק לחלוטין (מעל 12 חודש)',        value:'stopped'},
+        ]
+      },
+ 
+      // ── ד. פוסט-מנופאוזה — גיל 55+ ───────────────────────
+ 
+      {
+        id:'wh_years_since_meno',
+        text:'כמה שנים עברו מאז הפסקת המחזור?',
+        hint:'גיל 55+',
+        type:'single', options:[
+          {label:'פחות משנה',    value:'<1'},
+          {label:'1–5 שנים',    value:'1-5'},
+          {label:'5–10 שנים',   value:'5-10'},
+          {label:'מעל 10 שנים', value:'>10'},
+        ]
+      },
+ 
+      {
+        id:'wh_osteo_symptoms',
+        text:'האם חווית אחד מהבאים?',
+        hint:'גיל 55+ — סימני אוסטאופורוזיס',
+        type:'multi', options:[
+          {label:'שבר מעצם שברירית (מנפילה קלה)',       value:'fracture'},
+          {label:'כאבי גב תחתון / עמוד שדרה',          value:'back_pain'},
+          {label:'ירידה בגובה (יותר מס"מ אחד)',         value:'height_loss'},
+          {label:'אינני חווה אף מהנ"ל',                 value:'none'},
+        ]
+      },
+ 
+      {
+        id:'wh_cardio_risk',
+        text:'האם הרופא/ה ציין/ה סיכון קרדיו-מטבולי מוגבר לאחר גיל המעבר?',
+        hint:'גיל 55+ — הסיכון לב וכלי דם עולה לאחר מנופאוזה',
+        type:'single', options:[
+          {label:'כן, ניתן ייעוץ / טיפול',             value:'yes_treated'},
+          {label:'כן, אך לא טופלתי',                   value:'yes_untreated'},
+          {label:'לא צוין',                            value:'no'},
+          {label:'לא יודעת',                           value:'unknown'},
+        ]
+      },
+ 
+    ]
+  },
 ]
+ 
