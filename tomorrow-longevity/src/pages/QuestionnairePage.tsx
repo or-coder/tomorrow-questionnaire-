@@ -5,21 +5,21 @@ import type { Answers } from '@/utils/scoring'
  
 // Section icon mapping
 const SECTION_ICONS: Record<string, string> = {
-  medical_bg:       '🩺',
-  bp_digest:        '💉',
-  activity:         '🏃',
-  health_behaviors: '🫀',
-  anthropometry:    '⚖️',
-  nutrition:        '🥗',
-  srh:              '💬',
-  sleep:            '😴',
-  circadian:        '🌙',
-  qol_stress:       '🧠',
-  social:           '👥',
-  mindfulness:      '🧘',
-  cognition:        '💡',
-  expectations:     '🎯',
-  womens_health:    '🌸',
+  medical_bg:       '',
+  bp_digest:        '',
+  activity:         '',
+  health_behaviors: '',
+  anthropometry:    '',
+  nutrition:        '',
+  srh:              '',
+  sleep:            '',
+  circadian:        '',
+  qol_stress:       '',
+  social:           '',
+  mindfulness:      '',
+  cognition:        '',
+  expectations:     '',
+  womens_health:    '',
 }
  
 // Questions in womens_health that are age-gated
@@ -278,9 +278,46 @@ export default function QuestionnairePage() {
     const wdQuestions = sec.questions.filter(q => q.id.startsWith('n_wd_'))
     const weQuestions = sec.questions.filter(q => q.id.startsWith('n_we_'))
  
+    // weekendSameAsWeekday: when true, copy wd values to we and hide we inputs
+    const weSameAsWd = answers['_we_same_as_wd'] === 'yes'
+ 
+    const handleWeSameToggle = () => {
+      const newSame = !weSameAsWd
+      if (newSame) {
+        // copy all wd values -> we
+        const updates: Record<string, string> = { _we_same_as_wd: 'yes' }
+        wdQuestions.forEach(q => {
+          const weId = q.id.replace('n_wd_', 'n_we_')
+          updates[weId] = typeof answers[q.id] === 'string' ? answers[q.id] as string : ''
+        })
+        setAnswers(prev => ({ ...prev, ...updates }))
+      } else {
+        // clear we values and flag
+        const updates: Record<string, string> = { _we_same_as_wd: 'no' }
+        wdQuestions.forEach(q => {
+          const weId = q.id.replace('n_wd_', 'n_we_')
+          updates[weId] = ''
+        })
+        setAnswers(prev => ({ ...prev, ...updates }))
+      }
+    }
+ 
     return (
       <>
         {mealQ && renderQ(mealQ)}
+ 
+        {/* Detail tip */}
+        <div style={{
+          background:'rgba(139,74,47,.06)', border:'1px solid rgba(139,74,47,.2)',
+          padding:'10px 16px', marginBottom:'16px',
+          display:'flex', gap:'10px', alignItems:'flex-start',
+        }}>
+          
+          <p style={{fontFamily:'Heebo,sans-serif', fontSize:'12px', color:'#6b3020', lineHeight:1.7}}>
+            <strong>נסו להיות מפורטים ככל האפשר</strong> — לדוגמה: "2 ביצים מבושלות בכף שמן זית, 3 מלפפונים, פרוסת לחם שיפון, קפה שחור ללא סוכר".
+            ככל שתפרטו יותר, כך הניתוח יהיה מדויק יותר.
+          </p>
+        </div>
  
         {/* Weekday block */}
         <div style={{
@@ -290,10 +327,10 @@ export default function QuestionnairePage() {
             background:'#1a1512', padding:'12px 20px',
             display:'flex', alignItems:'center', gap:'10px',
           }}>
-            <span style={{fontSize:'16px'}}>📅</span>
+            
             <div>
               <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>יום חול — תפריט טיפוסי</p>
-              <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>תאר מה אתה אוכל בדרך כלל</p>
+              <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>תאר בפירוט מה אתה אוכל בדרך כלל</p>
             </div>
           </div>
           <div style={{padding:'16px', background:'#faf7f3', display:'flex', flexDirection:'column', gap:'10px'}}>
@@ -306,9 +343,8 @@ export default function QuestionnairePage() {
                   <p style={{fontSize:'13px',fontWeight:600,color:'#6b6055',marginBottom:'4px',fontFamily:'Heebo,sans-serif',letterSpacing:'.5px'}}>
                     {label}
                   </p>
-                  {q.hint && <p style={{fontSize:'11px',color:'#9b8f84',marginBottom:'4px',fontFamily:'Heebo,sans-serif'}}>{q.hint}</p>}
                   <textarea
-                    placeholder={q.placeholder}
+                    placeholder="לדוגמה: 2 ביצים מקושקשות בכף שמן זית, 2 פרוסות לחם שיפון, קפה שחור..."
                     value={typeof val === 'string' ? val : ''}
                     onChange={e => set(q.id, e.target.value)}
                     rows={2}
@@ -329,47 +365,89 @@ export default function QuestionnairePage() {
  
         {/* Weekend block */}
         <div style={{
-          border:'1px solid #d4cdc4', marginBottom:'16px', overflow:'hidden',
+          border: weSameAsWd ? '1px solid #4a8c5c' : '1px solid #d4cdc4',
+          marginBottom:'16px', overflow:'hidden',
+          transition:'border-color .2s',
         }}>
           <div style={{
             background:'#2d1f0e', padding:'12px 20px',
-            display:'flex', alignItems:'center', gap:'10px',
+            display:'flex', alignItems:'center', justifyContent:'space-between',
           }}>
-            <span style={{fontSize:'16px'}}>🌅</span>
-            <div>
-              <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>סוף שבוע — תפריט טיפוסי</p>
-              <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>שישי / שבת</p>
+            <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+              
+              <div>
+                <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>סוף שבוע — תפריט טיפוסי</p>
+                <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>שישי / שבת</p>
+              </div>
             </div>
+ 
+            {/* Same-as-weekday toggle */}
+            <button
+              onClick={handleWeSameToggle}
+              style={{
+                display:'flex', alignItems:'center', gap:'8px',
+                padding:'7px 14px',
+                background: weSameAsWd ? '#4a8c5c' : 'transparent',
+                border: weSameAsWd ? '1px solid #4a8c5c' : '1px solid rgba(255,255,255,.25)',
+                color: weSameAsWd ? '#fff' : 'rgba(255,255,255,.6)',
+                fontFamily:'Heebo,sans-serif', fontSize:'12px',
+                cursor:'pointer', transition:'all .2s', flexShrink:0,
+              }}
+            >
+              <span style={{
+                width:'16px', height:'16px',
+                border: weSameAsWd ? '2px solid #fff' : '1px solid rgba(255,255,255,.4)',
+                background: weSameAsWd ? '#fff' : 'transparent',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                fontSize:'10px', color:'#4a8c5c', fontWeight:700, flexShrink:0,
+              }}>
+                {weSameAsWd ? '✓' : ''}
+              </span>
+              זהה ליום חול
+            </button>
           </div>
-          <div style={{padding:'16px', background:'#faf7f3', display:'flex', flexDirection:'column', gap:'10px'}}>
-            {weQuestions.map(q => {
-              const mealKey = q.id.replace('n_we_', '')
-              const label = MEAL_LABELS[mealKey] || q.text
-              const val = answers[q.id]
-              return (
-                <div key={q.id}>
-                  <p style={{fontSize:'13px',fontWeight:600,color:'#6b6055',marginBottom:'4px',fontFamily:'Heebo,sans-serif',letterSpacing:'.5px'}}>
-                    {label}
-                  </p>
-                  {q.hint && <p style={{fontSize:'11px',color:'#9b8f84',marginBottom:'4px',fontFamily:'Heebo,sans-serif'}}>{q.hint}</p>}
-                  <textarea
-                    placeholder={q.placeholder}
-                    value={typeof val === 'string' ? val : ''}
-                    onChange={e => set(q.id, e.target.value)}
-                    rows={2}
-                    style={{
-                      width:'100%', padding:'8px 12px',
-                      fontSize:'13px', lineHeight:1.5,
-                      border:'1px solid #d4cdc4', outline:'none',
-                      background:'#fff', fontFamily:'Heebo,sans-serif',
-                      direction:'rtl', resize:'vertical',
-                      color:'#1a1512', boxSizing:'border-box',
-                    }}
-                  />
-                </div>
-              )
-            })}
-          </div>
+ 
+          {/* Weekend meals — hidden when same, shown when different */}
+          {weSameAsWd ? (
+            <div style={{
+              padding:'14px 20px', background:'#f0fff4',
+              display:'flex', alignItems:'center', gap:'10px',
+            }}>
+              
+              <p style={{fontFamily:'Heebo,sans-serif', fontSize:'13px', color:'#276749'}}>
+                הועתק מיום חול — לחץ "זהה ליום חול" שוב כדי לערוך בנפרד
+              </p>
+            </div>
+          ) : (
+            <div style={{padding:'16px', background:'#faf7f3', display:'flex', flexDirection:'column', gap:'10px'}}>
+              {weQuestions.map(q => {
+                const mealKey = q.id.replace('n_we_', '')
+                const label = MEAL_LABELS[mealKey] || q.text
+                const val = answers[q.id]
+                return (
+                  <div key={q.id}>
+                    <p style={{fontSize:'13px',fontWeight:600,color:'#6b6055',marginBottom:'4px',fontFamily:'Heebo,sans-serif',letterSpacing:'.5px'}}>
+                      {label}
+                    </p>
+                    <textarea
+                      placeholder="לדוגמה: חביתה עם 3 ביצים, סלט ירקות, חלה עם חמאה..."
+                      value={typeof val === 'string' ? val : ''}
+                      onChange={e => set(q.id, e.target.value)}
+                      rows={2}
+                      style={{
+                        width:'100%', padding:'8px 12px',
+                        fontSize:'13px', lineHeight:1.5,
+                        border:'1px solid #d4cdc4', outline:'none',
+                        background:'#fff', fontFamily:'Heebo,sans-serif',
+                        direction:'rtl', resize:'vertical',
+                        color:'#1a1512', boxSizing:'border-box',
+                      }}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </>
     )
@@ -392,7 +470,7 @@ export default function QuestionnairePage() {
           padding:'10px 16px', marginBottom:'20px',
           display:'flex', alignItems:'center', gap:'10px',
         }}>
-          <span style={{fontSize:'18px'}}>🌸</span>
+          
           <p style={{
             fontFamily:'Heebo,sans-serif', fontSize:'13px',
             color:'#9d174d', fontWeight:500,
@@ -408,25 +486,25 @@ export default function QuestionnairePage() {
   const renderActivitySection = () => {
     const categories = [
       {
-        icon:'🔥', title:'עצימות גבוהה',
+        icon:'', title:'עצימות גבוהה',
         subtitle:'ריצה, HIIT, כדורגל, אופניים בעלייה',
         color:'#b84040',
         daysId:'q_hi_days', minId:'q_hi_min',
       },
       {
-        icon:'🚶', title:'הליכה ועצימות נמוכה',
+        icon:'', title:'הליכה ועצימות נמוכה',
         subtitle:'הליכה, שחייה רגועה, אופניים בשטח שטוח',
         color:'#4a8c5c',
         daysId:'q_walk_days', minId:'q_walk_min',
       },
       {
-        icon:'🧘', title:'יוגה, פילאטס והתאוששות',
+        icon:'', title:'יוגה, פילאטס והתאוששות',
         subtitle:'פעילות גמישות, נשימה ומודעות לגוף',
         color:'#6b46c1',
         daysId:'q_mind_days', minId:'q_mind_min',
       },
       {
-        icon:'💪', title:'אימוני כוח',
+        icon:'', title:'אימוני כוח',
         subtitle:'משקולות, TRX, כושר פונקציונלי, CrossFit',
         color:'#c05621',
         daysId:'q_strength_days', minId:'q_strength_min',
@@ -513,7 +591,7 @@ export default function QuestionnairePage() {
             {secIdx+1} / {total}
           </p>
           <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-            <span style={{fontSize:'24px'}}>{SECTION_ICONS[sec.id] || '📋'}</span>
+            
             <div>
               <h2 style={{fontFamily:'Playfair Display,serif',color:'#fff',fontSize:'22px',fontWeight:400,marginBottom:'2px'}}>
                 {sec.title}
