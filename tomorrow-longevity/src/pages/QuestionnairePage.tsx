@@ -19,17 +19,38 @@ const SECTION_ICONS: Record<string, string> = {
   mindfulness:      '🧘',
   cognition:        '💡',
   expectations:     '🎯',
+  womens_health:    '🌸',
+}
+ 
+// Questions in womens_health that are age-gated
+// hint field encodes the age range for display filtering
+const WOMENS_AGE_GATES: Record<string, { min?: number; max?: number }> = {
+  wh_pregnancy_history: { max: 45 },
+  wh_fertility:         { max: 45 },
+  wh_period_pain:       { max: 45 },
+  wh_bleeding:          { max: 45 },
+  wh_meno_symptoms:     { min: 42, max: 58 },
+  wh_cycle_changes:     { min: 42, max: 58 },
+  wh_years_since_meno:  { min: 52 },
+  wh_osteo_symptoms:    { min: 52 },
+  wh_cardio_risk:       { min: 52 },
 }
  
 export default function QuestionnairePage() {
   const nav = useNavigate()
   const { name, age, gender, idNum } = (useLocation().state as {name:string;age:string;gender:string;idNum:string}) || {}
+  const ageNum = Number(age) || 0
   const [secIdx, setSecIdx] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
   const [showError, setShowError] = useState(false)
  
-  const sec   = SECTIONS[secIdx]
-  const total = SECTIONS.length
+  // Filter sections: womens_health only for female
+  const ACTIVE_SECTIONS = SECTIONS.filter(s =>
+    s.id !== 'womens_health' || gender === 'female'
+  )
+ 
+  const sec   = ACTIVE_SECTIONS[secIdx]
+  const total = ACTIVE_SECTIONS.length
   const pct   = ((secIdx + 1) / total) * 100
  
   const set = (id: string, val: string | number | string[]) =>
@@ -60,7 +81,19 @@ export default function QuestionnairePage() {
     return true
   }
  
-  const allAnswered = () => sec.questions.every(q => isAnswered(q))
+  // For womens_health, filter questions by age
+  const getActiveQuestions = (section: typeof sec) => {
+    if (section.id !== 'womens_health') return section.questions
+    return section.questions.filter(q => {
+      const gate = WOMENS_AGE_GATES[q.id]
+      if (!gate) return true
+      if (gate.min !== undefined && ageNum < gate.min) return false
+      if (gate.max !== undefined && ageNum > gate.max) return false
+      return true
+    })
+  }
+ 
+  const allAnswered = () => getActiveQuestions(sec).every(q => isAnswered(q))
  
   const goNext = () => {
     if (!allAnswered()) { setShowError(true); window.scrollTo(0,0); return }
@@ -342,6 +375,35 @@ export default function QuestionnairePage() {
     )
   }
  
+  // Special rendering for women's health — age-filtered questions with visual grouping
+  const renderWomensHealthSection = () => {
+    const activeQs = getActiveQuestions(sec)
+ 
+    const AGE_GROUP_LABEL =
+      ageNum <= 45 ? `שאלון מותאם לגיל ${ageNum} — שנות הפוריות` :
+      ageNum <= 58 ? `שאלון מותאם לגיל ${ageNum} — גיל המעבר` :
+                    `שאלון מותאם לגיל ${ageNum} — לאחר גיל המעבר`
+ 
+    return (
+      <>
+        {/* Age group badge */}
+        <div style={{
+          background:'rgba(236,72,153,.08)', border:'1px solid rgba(236,72,153,.25)',
+          padding:'10px 16px', marginBottom:'20px',
+          display:'flex', alignItems:'center', gap:'10px',
+        }}>
+          <span style={{fontSize:'18px'}}>🌸</span>
+          <p style={{
+            fontFamily:'Heebo,sans-serif', fontSize:'13px',
+            color:'#9d174d', fontWeight:500,
+          }}>{AGE_GROUP_LABEL}</p>
+        </div>
+ 
+        {activeQs.map(q => renderQ(q))}
+      </>
+    )
+  }
+ 
   // Special rendering for activity section — 4 clear category blocks
   const renderActivitySection = () => {
     const categories = [
@@ -473,11 +535,13 @@ export default function QuestionnairePage() {
           </div>
         )}
  
-        {/* Questions — special layout for activity & nutrition */}
+        {/* Questions — special layout per section */}
         {sec.id === 'activity'
           ? renderActivitySection()
           : sec.id === 'nutrition'
           ? renderNutritionSection()
+          : sec.id === 'womens_health'
+          ? renderWomensHealthSection()
           : sec.questions.map(q => renderQ(q))
         }
  
