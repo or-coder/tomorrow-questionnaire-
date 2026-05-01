@@ -32,6 +32,9 @@ export const SECTIONS: Section[] = [
           {label:'כן — נפש / דיכאון / חרדה',    value:'psych'},
           {label:'כן — אחר',                    value:'other'},
         ]},
+      { id:'qm2_other', text:'אילו תרופות?', type:'text',
+        placeholder:'שם התרופה / מטרת הטיפול',
+        showIf:{ id:'qm2', values:['other'] } },
       { id:'qm3', text:'האם אובחנת בעבר באחד מהבאים?', type:'multi',
         options:[
           {label:'יתר לחץ דם',                   value:'hbp'},
@@ -49,19 +52,26 @@ export const SECTIONS: Section[] = [
   {
     id: 'bp_digest', title: 'לחץ דם ועיכול', en: 'Blood Pressure & Digestion',
     questions: [
+      { id:'qb_diagnosed', text:'האם אובחנת ביתר לחץ דם (הִיפֶּרטֶנְסִיָּה)?', type:'single',
+        options:[
+          {label:'כן, אובחנתי', value:'yes'},
+          {label:'לא',          value:'no'},
+        ]},
+      { id:'qb2', text:'האם אתה מטופל כיום בתרופות ללחץ דם?', type:'single',
+        showIf:{ id:'qb_diagnosed', values:['yes'] },
+        options:[
+          {label:'כן, ולחץ הדם מאוזן',      value:'treated_ok'},
+          {label:'כן, אך לחץ הדם לא מאוזן', value:'treated_uncontrolled'},
+          {label:'לא מטופל',                 value:'no'},
+        ]},
       { id:'qb1', text:'מה לחץ הדם הסיסטולי שלך (המספר העליון)?', type:'single',
+        hint:'אם אינך יודע/ת את המספר המדויק, בחר/י הערכה כללית.',
         options:[
           {label:'תקין — מתחת ל-120',   value:'<120'},
           {label:'גבוה מעט — 120–139',  value:'120-139'},
           {label:'גבוה — 140–159',      value:'140-159'},
           {label:'גבוה מאוד — 160+',    value:'160+'},
           {label:'לא יודע / לא נמדד',   value:'unknown'},
-        ]},
-      { id:'qb2', text:'האם אתה מטופל בתרופות ללחץ דם?', type:'single',
-        options:[
-          {label:'כן, ולחץ הדם מאוזן',      value:'treated_ok'},
-          {label:'כן, אך לחץ הדם לא מאוזן', value:'treated_uncontrolled'},
-          {label:'לא',                      value:'no'},
         ]},
       { id:'qb3', text:'האם חווית אחד מהבאים בחצי השנה האחרונה?', type:'multi',
         options:[
@@ -279,7 +289,7 @@ export const SECTIONS: Section[] = [
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
       { id:'q22', text:'אחרים מבחינים בבעיות השינה שלי', type:'scale', min:0, max:4,
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
-      { id:'q23', text:'בעיות השינה שלי מדאיגות אותי', type:'scale', min:0, max:4,
+      { id:'q23', text:'בעיות השינה מטרידות אותי', type:'scale', min:0, max:4,
         scaleLabels:{ min:'לא מסכים כלל', max:'מסכים מאוד' } },
     ]
   },
@@ -494,13 +504,15 @@ export const SECTIONS: Section[] = [
  
       {
         id:'wh_menstrual_status',
-        text:'מה הסטטוס הנוכחי של המחזור החודשי שלך?',
+        text:'מה מצב המחזור החודשי שלך כיום?',
+        hint:'בחרי את האפשרות שמתארת אותך הכי טוב.',
         type:'single', options:[
-          {label:'מחזור סדיר',                       value:'regular'},
-          {label:'מחזור לא סדיר',                    value:'irregular'},
-          {label:'אמנוראה (אין מחזור, לא בהריון)',    value:'amenorrhea'},
-          {label:'פרי-מנופאוזה (שינויים בדפוס)',      value:'perimenopause'},
-          {label:'לאחר גיל המעבר (מנופאוזה)',         value:'menopause'},
+          {label:'יש לי מחזור סדיר ורגיל',                          value:'regular'},
+          {label:'יש לי מחזור אך הוא לא סדיר',                     value:'irregular'},
+          {label:'אין לי מחזור בגלל התקן הורמונלי / גלולות',        value:'no_period_hormonal'},
+          {label:'המחזור השתנה / נעשה לא סדיר בשנים האחרונות',       value:'perimenopause'},
+          {label:'המחזור הפסיק לחלוטין (יותר מ-12 חודש)',            value:'menopause'},
+          {label:'אין לי מחזור מסיבה אחרת',                        value:'amenorrhea'},
         ]
       },
  
