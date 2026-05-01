@@ -13,9 +13,17 @@ export default function CoverPage() {
   const [loading, setLoading] = useState(false)
   const [error,  setError]  = useState('')
  
+  const [attempted, setAttempted] = useState(false)
   const canStart = name.trim() && age.trim() && gender && idNum.trim().length >= 5
  
+  const missingFields = []
+  if (!name.trim())             missingFields.push('שם מלא')
+  if (!age.trim())              missingFields.push('גיל')
+  if (!idNum.trim() || idNum.trim().length < 5) missingFields.push('תעודת זהות')
+  if (!gender)                  missingFields.push('מין')
+ 
   async function handleStart() {
+    setAttempted(true)
     if (!canStart) return
     setLoading(true)
     setError('')
@@ -95,37 +103,37 @@ export default function CoverPage() {
       <div style={{width:'100%', maxWidth:'360px', display:'flex', flexDirection:'column', gap:'12px', marginBottom:'28px'}}>
         <input
           value={name} onChange={e => setName(e.target.value)}
-          placeholder="שם מלא"
+          placeholder="שם מלא *"
           style={{
             width:'100%', padding:'14px 16px',
             fontFamily:'Heebo,sans-serif', fontSize:'14px',
             background:'transparent',
-            border:'1px solid rgba(255,255,255,.2)',
+            border:`1px solid ${attempted && !name.trim() ? 'rgba(239,68,68,.7)' : 'rgba(255,255,255,.2)'}`,
             color:'#fff', outline:'none',
             direction:'rtl',
           }}
         />
         <input
           type="number" value={age} onChange={e => setAge(e.target.value)}
-          placeholder="גיל" min={10} max={120}
+          placeholder="גיל *" min={10} max={120}
           style={{
             width:'100%', padding:'14px 16px',
             fontFamily:'Heebo,sans-serif', fontSize:'14px',
             background:'transparent',
-            border:'1px solid rgba(255,255,255,.2)',
+            border:`1px solid ${attempted && !age.trim() ? 'rgba(239,68,68,.7)' : 'rgba(255,255,255,.2)'}`,
             color:'#fff', outline:'none',
             direction:'rtl',
           }}
         />
         <input
           value={idNum} onChange={e => setIdNum(e.target.value)}
-          placeholder="מספר תעודת זהות"
+          placeholder="מספר תעודת זהות *"
           maxLength={9}
           style={{
             width:'100%', padding:'14px 16px',
             fontFamily:'Heebo,sans-serif', fontSize:'14px',
             background:'transparent',
-            border:'1px solid rgba(255,255,255,.2)',
+            border:`1px solid ${attempted && idNum.trim().length < 5 ? 'rgba(239,68,68,.7)' : 'rgba(255,255,255,.2)'}`,
             color:'#fff', outline:'none',
             direction:'ltr', textAlign:'right',
           }}
@@ -146,6 +154,21 @@ export default function CoverPage() {
           ))}
         </div>
       </div>
+ 
+      {/* Validation summary */}
+      {attempted && missingFields.length > 0 && (
+        <div style={{
+          maxWidth:'360px', width:'100%',
+          padding:'12px 16px', marginBottom:'12px',
+          background:'rgba(185,28,28,.12)',
+          border:'1px solid rgba(185,28,28,.35)',
+          color:'#fca5a5',
+          fontFamily:'Heebo,sans-serif', fontSize:'13px',
+          textAlign:'right',
+        }}>
+          יש למלא את כל השדות: {missingFields.join(', ')}
+        </div>
+      )}
  
       {/* Error message */}
       {error && (
@@ -188,4 +211,5 @@ export default function CoverPage() {
     </div>
   )
 }
+ 
  
