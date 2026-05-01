@@ -38,10 +38,14 @@ const WOMENS_AGE_GATES: Record<string, { min?: number; max?: number }> = {
  
 export default function QuestionnairePage() {
   const nav = useNavigate()
-  const { name, age, gender, idNum } = (useLocation().state as {name:string;age:string;gender:string;idNum:string}) || {}
+  const locationState = useLocation().state as {name:string;age:string;gender:string;idNum:string} | null
+  // Persist state in sessionStorage so browser back/forward doesn't lose it
+  const savedState = locationState || JSON.parse(sessionStorage.getItem('tomorrow_cover_state') || 'null') || {}
+  if (locationState) sessionStorage.setItem('tomorrow_cover_state', JSON.stringify(locationState))
+  const { name, age, gender, idNum } = savedState
   const ageNum = Number(age) || 0
-  const [secIdx, setSecIdx] = useState(0)
-  const [answers, setAnswers] = useState<Answers>({})
+  const [secIdx, setSecIdx] = useState(() => Number(sessionStorage.getItem('tomorrow_sec_idx') || '0'))
+  const [answers, setAnswers] = useState<Answers>(() => JSON.parse(sessionStorage.getItem('tomorrow_answers') || '{}'))
   const [showError, setShowError] = useState(false)
  
   // Filter sections: womens_health only for female
@@ -54,7 +58,11 @@ export default function QuestionnairePage() {
   const pct   = ((secIdx + 1) / total) * 100
  
   const set = (id: string, val: string | number | string[]) =>
-    setAnswers(prev => ({...prev, [id]: val}))
+    setAnswers(prev => {
+      const next = {...prev, [id]: val}
+      sessionStorage.setItem('tomorrow_answers', JSON.stringify(next))
+      return next
+    })
  
   const toggleMulti = (id: string, val: string, isNone: boolean) => {
     const cur = (answers[id] as string[]) || []
@@ -98,10 +106,25 @@ export default function QuestionnairePage() {
   const goNext = () => {
     if (!allAnswered()) { setShowError(true); window.scrollTo(0,0); return }
     setShowError(false)
-    if (secIdx < total - 1) { setSecIdx(s => s+1); window.scrollTo(0,0) }
-    else nav('/loading', {state: {name, age, gender, idNum, answers}})
+    if (secIdx < total - 1) {
+      const next = secIdx + 1
+      sessionStorage.setItem('tomorrow_sec_idx', String(next))
+      setSecIdx(next); window.scrollTo(0,0)
+    }
+    else {
+      sessionStorage.removeItem('tomorrow_sec_idx')
+      sessionStorage.removeItem('tomorrow_answers')
+      sessionStorage.removeItem('tomorrow_cover_state')
+      nav('/loading', {state: {name, age, gender, idNum, answers}})
+    }
   }
-  const goBack = () => { if (secIdx > 0) { setSecIdx(s => s-1); window.scrollTo(0,0) } }
+  const goBack = () => {
+    if (secIdx > 0) {
+      const prev = secIdx - 1
+      sessionStorage.setItem('tomorrow_sec_idx', String(prev))
+      setSecIdx(prev); window.scrollTo(0,0)
+    }
+  }
  
   // ── Nutrition section: group into weekday / weekend ──────
   const isNutritionText = (id: string) => id.startsWith('n_wd_') || id.startsWith('n_we_')
