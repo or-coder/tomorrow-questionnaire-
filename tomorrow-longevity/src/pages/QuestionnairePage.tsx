@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TomorrowLogo } from '@/TomorrowLogo'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { SECTIONS, type Question } from '@/data/questions'
 import type { Answers } from '@/utils/scoring'
@@ -143,11 +144,11 @@ export default function QuestionnairePage() {
  
     if (q.type === 'number') return (
       <div key={q.id} style={{
-        background:'#faf7f3', border:'1px solid #d4cdc4',
+        background:'rgba(255,255,255,.6)', border:'1px solid #d4cdc4',
         padding:'20px', marginBottom:'12px',
       }}>
-        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'8px',color:'#1a1512',fontFamily:'Heebo,sans-serif'}}>{q.text}</p>
-        {q.hint && <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'12px',lineHeight:1.6,fontFamily:'Heebo,sans-serif'}}>{q.hint}</p>}
+        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'8px',color:'var(--soft-black)',fontFamily:'var(--font-body)'}}>{q.text}</p>
+        {q.hint && <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'12px',lineHeight:1.6,fontFamily:'var(--font-body)'}}>{q.hint}</p>}
         <input
           type="number" min={q.min} max={q.max} placeholder={q.placeholder}
           value={val !== undefined ? String(val) : ''}
@@ -155,7 +156,7 @@ export default function QuestionnairePage() {
           style={{
             padding:'10px 14px', fontSize:'16px',
             border:'1px solid #d4cdc4', outline:'none',
-            background:'transparent', fontFamily:'Heebo,sans-serif',
+            background:'transparent', fontFamily:'var(--font-body)',
             width:'160px', direction:'ltr', textAlign:'right',
             WebkitAppearance:'none',
           }}
@@ -165,11 +166,11 @@ export default function QuestionnairePage() {
  
     if (q.type === 'text') return (
       <div key={q.id} style={{
-        background:'#faf7f3', border:'1px solid #d4cdc4',
+        background:'rgba(255,255,255,.6)', border:'1px solid #d4cdc4',
         padding:'20px', marginBottom:'12px',
       }}>
-        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'8px',color:'#1a1512',fontFamily:'Heebo,sans-serif'}}>{q.text}</p>
-        {q.hint && <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'12px',lineHeight:1.5,fontFamily:'Heebo,sans-serif'}}>{q.hint}</p>}
+        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'8px',color:'var(--soft-black)',fontFamily:'var(--font-body)'}}>{q.text}</p>
+        {q.hint && <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'12px',lineHeight:1.5,fontFamily:'var(--font-body)'}}>{q.hint}</p>}
         <textarea
           placeholder={q.placeholder}
           value={typeof val === 'string' ? val : ''}
@@ -179,9 +180,9 @@ export default function QuestionnairePage() {
             width:'100%', padding:'10px 14px',
             fontSize:'14px', lineHeight:1.6,
             border:'1px solid #d4cdc4', outline:'none',
-            background:'transparent', fontFamily:'Heebo,sans-serif',
+            background:'transparent', fontFamily:'var(--font-body)',
             direction:'rtl', resize:'vertical',
-            color:'#1a1512', boxSizing:'border-box',
+            color:'var(--soft-black)', boxSizing:'border-box',
           }}
         />
       </div>
@@ -189,11 +190,11 @@ export default function QuestionnairePage() {
  
     if (q.type === 'single') return (
       <div key={q.id} style={{
-        background:'#faf7f3', border:'1px solid #d4cdc4',
+        background:'rgba(255,255,255,.6)', border:'1px solid #d4cdc4',
         padding:'20px', marginBottom:'12px',
       }}>
-        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'16px',color:'#1a1512',fontFamily:'Heebo,sans-serif'}}>{q.text}</p>
-        {q.hint && <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'12px',lineHeight:1.6,fontFamily:'Heebo,sans-serif'}}>{q.hint}</p>}
+        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'16px',color:'var(--soft-black)',fontFamily:'var(--font-body)'}}>{q.text}</p>
+        {q.hint && <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'12px',lineHeight:1.6,fontFamily:'var(--font-body)'}}>{q.hint}</p>}
         <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
           {q.options!.map(o => (
             <button key={o.value} onClick={() => set(q.id, o.value)}
@@ -204,7 +205,7 @@ export default function QuestionnairePage() {
                 borderRightWidth: val===o.value ? '4px' : '1px',
                 background: val===o.value ? 'rgba(139,74,47,.06)' : 'transparent',
                 fontWeight: val===o.value ? 500 : 400,
-                color:'#1a1512', fontFamily:'Heebo,sans-serif',
+                color:'var(--soft-black)', fontFamily:'var(--font-body)',
                 cursor:'pointer', transition:'all .15s',
               }}>
               {o.label}
@@ -218,11 +219,11 @@ export default function QuestionnairePage() {
       const cur = (val as string[]) || []
       return (
         <div key={q.id} style={{
-          background:'#faf7f3', border:'1px solid #d4cdc4',
+          background:'rgba(255,255,255,.6)', border:'1px solid #d4cdc4',
           padding:'20px', marginBottom:'12px',
         }}>
-          <p style={{fontSize:'14px',fontWeight:500,marginBottom:'4px',color:'#1a1512',fontFamily:'Heebo,sans-serif'}}>{q.text}</p>
-          <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'14px',fontFamily:'Heebo,sans-serif'}}>ניתן לסמן יותר מאחד</p>
+          <p style={{fontSize:'14px',fontWeight:500,marginBottom:'4px',color:'var(--soft-black)',fontFamily:'var(--font-body)'}}>{q.text}</p>
+          <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'14px',fontFamily:'var(--font-body)'}}>ניתן לסמן יותר מאחד</p>
           <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
             {q.options!.map(o => {
               const isNone = o.value === 'none'
@@ -236,14 +237,14 @@ export default function QuestionnairePage() {
                     border: sel ? '1px solid #8b4a2f' : '1px solid #d4cdc4',
                     borderRightWidth: sel ? '4px' : '1px',
                     background: sel ? 'rgba(139,74,47,.06)' : 'transparent',
-                    color:'#1a1512', fontFamily:'Heebo,sans-serif',
+                    color:'var(--soft-black)', fontFamily:'var(--font-body)',
                     cursor:'pointer', display:'flex',
                     alignItems:'center', gap:'12px',
                   }}>
                   <span style={{
                     width:'18px', height:'18px', flexShrink:0,
                     border: sel ? '2px solid #8b4a2f' : '1px solid #d4cdc4',
-                    background: sel ? '#8b4a2f' : 'transparent',
+                    background: sel ? 'var(--evergreen)' : 'transparent',
                     display:'flex', alignItems:'center', justifyContent:'center',
                     fontSize:'11px', color:'#fff', fontWeight:700,
                   }}>
@@ -260,16 +261,16 @@ export default function QuestionnairePage() {
  
     if (q.type === 'scale') return (
       <div key={q.id} style={{
-        background:'#faf7f3', border:'1px solid #d4cdc4',
+        background:'rgba(255,255,255,.6)', border:'1px solid #d4cdc4',
         padding:'20px', marginBottom:'12px',
       }}>
-        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'16px',color:'#1a1512',fontFamily:'Heebo,sans-serif'}}>{q.text}</p>
+        <p style={{fontSize:'14px',fontWeight:500,marginBottom:'16px',color:'var(--soft-black)',fontFamily:'var(--font-body)'}}>{q.text}</p>
         <div style={{width:'100%'}}>
           <div style={{display:'flex',justifyContent:'space-between',marginBottom:'8px'}}>
-            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'right'}}>
+            <span style={{fontSize:'11px',color:'var(--warm-taupe)',fontFamily:'var(--font-body)',textAlign:'right'}}>
               {q.scaleLabels?.min}
             </span>
-            <span style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif',textAlign:'left'}}>
+            <span style={{fontSize:'11px',color:'var(--warm-taupe)',fontFamily:'var(--font-body)',textAlign:'left'}}>
               {q.scaleLabels?.max}
             </span>
           </div>
@@ -280,9 +281,9 @@ export default function QuestionnairePage() {
                   flex:1, paddingTop:'12px', paddingBottom:'12px',
                   fontSize:'15px', fontWeight:500,
                   border: val===n ? '2px solid #8b4a2f' : '1px solid #d4cdc4',
-                  background: val===n ? '#8b4a2f' : 'transparent',
-                  color: val===n ? '#fff' : '#1a1512',
-                  fontFamily:'Heebo,sans-serif',
+                  background: val===n ? 'var(--evergreen)' : 'transparent',
+                  color: val===n ? '#fff' : 'var(--soft-black)',
+                  fontFamily:'var(--font-body)',
                   cursor:'pointer', transition:'all .15s',
                   minWidth:0,
                 }}>
@@ -336,7 +337,7 @@ export default function QuestionnairePage() {
           display:'flex', gap:'10px', alignItems:'flex-start',
         }}>
           
-          <p style={{fontFamily:'Heebo,sans-serif', fontSize:'12px', color:'#6b3020', lineHeight:1.7}}>
+          <p style={{fontFamily:'var(--font-body)', fontSize:'12px', color:'#6b3020', lineHeight:1.7}}>
             <strong>נסו להיות מפורטים ככל האפשר</strong> — לדוגמה: "2 ביצים מבושלות בכף שמן זית, 3 מלפפונים, פרוסת לחם שיפון, קפה שחור ללא סוכר".
             ככל שתפרטו יותר, כך הניתוח יהיה מדויק יותר.
           </p>
@@ -347,23 +348,23 @@ export default function QuestionnairePage() {
           border:'1px solid #d4cdc4', marginBottom:'16px', overflow:'hidden',
         }}>
           <div style={{
-            background:'#1a1512', padding:'12px 20px',
+            background:'var(--soft-black)', padding:'12px 20px',
             display:'flex', alignItems:'center', gap:'10px',
           }}>
             
             <div>
-              <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>יום חול — תפריט טיפוסי</p>
-              <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>תאר בפירוט מה אתה אוכל בדרך כלל</p>
+              <p style={{color:'#fff',fontFamily:'var(--font-body)',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>יום חול — תפריט טיפוסי</p>
+              <p style={{color:'var(--warm-taupe)',fontFamily:'var(--font-body)',fontSize:'11px'}}>תאר בפירוט מה אתה אוכל בדרך כלל</p>
             </div>
           </div>
-          <div style={{padding:'16px', background:'#faf7f3', display:'flex', flexDirection:'column', gap:'10px'}}>
+          <div style={{padding:'16px', background:'rgba(255,255,255,.6)', display:'flex', flexDirection:'column', gap:'10px'}}>
             {wdQuestions.map(q => {
               const mealKey = q.id.replace('n_wd_', '')
               const label = MEAL_LABELS[mealKey] || q.text
               const val = answers[q.id]
               return (
                 <div key={q.id}>
-                  <p style={{fontSize:'13px',fontWeight:600,color:'#6b6055',marginBottom:'4px',fontFamily:'Heebo,sans-serif',letterSpacing:'.5px'}}>
+                  <p style={{fontSize:'13px',fontWeight:600,color:'var(--warm-taupe)',marginBottom:'4px',fontFamily:'var(--font-body)',letterSpacing:'.5px'}}>
                     {label}
                   </p>
                   <textarea
@@ -375,9 +376,9 @@ export default function QuestionnairePage() {
                       width:'100%', padding:'8px 12px',
                       fontSize:'13px', lineHeight:1.5,
                       border:'1px solid #d4cdc4', outline:'none',
-                      background:'#fff', fontFamily:'Heebo,sans-serif',
+                      background:'#fff', fontFamily:'var(--font-body)',
                       direction:'rtl', resize:'vertical',
-                      color:'#1a1512', boxSizing:'border-box',
+                      color:'var(--soft-black)', boxSizing:'border-box',
                     }}
                   />
                 </div>
@@ -393,14 +394,14 @@ export default function QuestionnairePage() {
           transition:'border-color .2s',
         }}>
           <div style={{
-            background:'#2d1f0e', padding:'12px 20px',
+            background:'var(--warm-taupe)', padding:'12px 20px',
             display:'flex', alignItems:'center', justifyContent:'space-between',
           }}>
             <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
               
               <div>
-                <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>סוף שבוע — תפריט טיפוסי</p>
-                <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>שישי / שבת</p>
+                <p style={{color:'#fff',fontFamily:'var(--font-body)',fontSize:'14px',fontWeight:500,marginBottom:'2px'}}>סוף שבוע — תפריט טיפוסי</p>
+                <p style={{color:'var(--warm-taupe)',fontFamily:'var(--font-body)',fontSize:'11px'}}>שישי / שבת</p>
               </div>
             </div>
  
@@ -410,10 +411,10 @@ export default function QuestionnairePage() {
               style={{
                 display:'flex', alignItems:'center', gap:'8px',
                 padding:'7px 14px',
-                background: weSameAsWd ? '#4a8c5c' : 'transparent',
+                background: weSameAsWd ? 'var(--evergreen)' : 'transparent',
                 border: weSameAsWd ? '1px solid #4a8c5c' : '1px solid rgba(255,255,255,.25)',
                 color: weSameAsWd ? '#fff' : 'rgba(255,255,255,.6)',
-                fontFamily:'Heebo,sans-serif', fontSize:'12px',
+                fontFamily:'var(--font-body)', fontSize:'12px',
                 cursor:'pointer', transition:'all .2s', flexShrink:0,
               }}
             >
@@ -422,7 +423,7 @@ export default function QuestionnairePage() {
                 border: weSameAsWd ? '2px solid #fff' : '1px solid rgba(255,255,255,.4)',
                 background: weSameAsWd ? '#fff' : 'transparent',
                 display:'flex', alignItems:'center', justifyContent:'center',
-                fontSize:'10px', color:'#4a8c5c', fontWeight:700, flexShrink:0,
+                fontSize:'10px', color:'var(--evergreen)', fontWeight:700, flexShrink:0,
               }}>
                 {weSameAsWd ? '✓' : ''}
               </span>
@@ -433,23 +434,23 @@ export default function QuestionnairePage() {
           {/* Weekend meals — hidden when same, shown when different */}
           {weSameAsWd ? (
             <div style={{
-              padding:'14px 20px', background:'#f0fff4',
+              padding:'14px 20px', background:'rgba(35,53,43,.06)',
               display:'flex', alignItems:'center', gap:'10px',
             }}>
               
-              <p style={{fontFamily:'Heebo,sans-serif', fontSize:'13px', color:'#276749'}}>
+              <p style={{fontFamily:'var(--font-body)', fontSize:'13px', color:'var(--evergreen)'}}>
                 הועתק מיום חול — לחץ "זהה ליום חול" שוב כדי לערוך בנפרד
               </p>
             </div>
           ) : (
-            <div style={{padding:'16px', background:'#faf7f3', display:'flex', flexDirection:'column', gap:'10px'}}>
+            <div style={{padding:'16px', background:'rgba(255,255,255,.6)', display:'flex', flexDirection:'column', gap:'10px'}}>
               {weQuestions.map(q => {
                 const mealKey = q.id.replace('n_we_', '')
                 const label = MEAL_LABELS[mealKey] || q.text
                 const val = answers[q.id]
                 return (
                   <div key={q.id}>
-                    <p style={{fontSize:'13px',fontWeight:600,color:'#6b6055',marginBottom:'4px',fontFamily:'Heebo,sans-serif',letterSpacing:'.5px'}}>
+                    <p style={{fontSize:'13px',fontWeight:600,color:'var(--warm-taupe)',marginBottom:'4px',fontFamily:'var(--font-body)',letterSpacing:'.5px'}}>
                       {label}
                     </p>
                     <textarea
@@ -461,9 +462,9 @@ export default function QuestionnairePage() {
                         width:'100%', padding:'8px 12px',
                         fontSize:'13px', lineHeight:1.5,
                         border:'1px solid #d4cdc4', outline:'none',
-                        background:'#fff', fontFamily:'Heebo,sans-serif',
+                        background:'#fff', fontFamily:'var(--font-body)',
                         direction:'rtl', resize:'vertical',
-                        color:'#1a1512', boxSizing:'border-box',
+                        color:'var(--soft-black)', boxSizing:'border-box',
                       }}
                     />
                   </div>
@@ -489,14 +490,14 @@ export default function QuestionnairePage() {
       <>
         {/* Age group badge */}
         <div style={{
-          background:'rgba(236,72,153,.08)', border:'1px solid rgba(236,72,153,.25)',
+          background:'rgba(118,106,96,.07)', border:'1px solid rgba(118,106,96,.2)',
           padding:'10px 16px', marginBottom:'20px',
           display:'flex', alignItems:'center', gap:'10px',
         }}>
           
           <p style={{
-            fontFamily:'Heebo,sans-serif', fontSize:'13px',
-            color:'#9d174d', fontWeight:500,
+            fontFamily:'var(--font-body)', fontSize:'13px',
+            color:'var(--warm-taupe)', fontWeight:500,
           }}>{AGE_GROUP_LABEL}</p>
         </div>
  
@@ -517,7 +518,7 @@ export default function QuestionnairePage() {
       {
         icon:'', title:'הליכה ועצימות נמוכה',
         subtitle:'הליכה, שחייה רגועה, אופניים בשטח שטוח',
-        color:'#4a8c5c',
+        color:'var(--evergreen)',
         daysId:'q_walk_days', minId:'q_walk_min',
       },
       {
@@ -540,32 +541,32 @@ export default function QuestionnairePage() {
       }}>
         {/* Category header */}
         <div style={{
-          background:'#1a1512', padding:'12px 20px',
+          background:'var(--soft-black)', padding:'12px 20px',
           display:'flex', alignItems:'center', gap:'12px',
           borderRight:`4px solid ${cat.color}`,
         }}>
           <span style={{fontSize:'20px'}}>{cat.icon}</span>
           <div>
-            <p style={{color:'#fff',fontFamily:'Heebo,sans-serif',fontSize:'14px',fontWeight:600,marginBottom:'2px'}}>{cat.title}</p>
-            <p style={{color:'#6b6055',fontFamily:'Heebo,sans-serif',fontSize:'11px'}}>{cat.subtitle}</p>
+            <p style={{color:'#fff',fontFamily:'var(--font-body)',fontSize:'14px',fontWeight:600,marginBottom:'2px'}}>{cat.title}</p>
+            <p style={{color:'var(--warm-taupe)',fontFamily:'var(--font-body)',fontSize:'11px'}}>{cat.subtitle}</p>
           </div>
         </div>
         {/* Inputs */}
         <div style={{
-          padding:'16px', background:'#faf7f3',
+          padding:'16px', background:'rgba(255,255,255,.6)',
           display:'flex', gap:'16px', flexWrap:'wrap',
         }}>
           {/* Days */}
           <div style={{flex:1, minWidth:'120px'}}>
-            <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'6px',fontFamily:'Heebo,sans-serif',fontWeight:500}}>ימים בשבוע</p>
+            <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'6px',fontFamily:'var(--font-body)',fontWeight:500}}>ימים בשבוע</p>
             <input
               type="number" min={0} max={7} placeholder="0–7"
               value={answers[cat.daysId] !== undefined ? String(answers[cat.daysId]) : ''}
               onChange={e => set(cat.daysId, e.target.value === '' ? '' : Number(e.target.value))}
               style={{
                 padding:'10px 14px', fontSize:'18px', fontWeight:600,
-                border:`1px solid ${answers[cat.daysId] !== undefined && answers[cat.daysId] !== '' ? cat.color : '#d4cdc4'}`,
-                outline:'none', background:'transparent', fontFamily:'Heebo,sans-serif',
+                border:`1px solid ${answers[cat.daysId] !== undefined && answers[cat.daysId] !== '' ? cat.color : 'rgba(54,51,48,.12)'}`,
+                outline:'none', background:'transparent', fontFamily:'var(--font-body)',
                 width:'100%', direction:'ltr', textAlign:'center',
                 WebkitAppearance:'none', boxSizing:'border-box',
                 color: cat.color,
@@ -574,15 +575,15 @@ export default function QuestionnairePage() {
           </div>
           {/* Minutes */}
           <div style={{flex:2, minWidth:'160px'}}>
-            <p style={{fontSize:'12px',color:'#6b6055',marginBottom:'6px',fontFamily:'Heebo,sans-serif',fontWeight:500}}>דקות סה"כ בשבוע</p>
+            <p style={{fontSize:'12px',color:'var(--warm-taupe)',marginBottom:'6px',fontFamily:'var(--font-body)',fontWeight:500}}>דקות סה"כ בשבוע</p>
             <input
               type="number" min={0} max={2000} placeholder="לדוגמה: 90"
               value={answers[cat.minId] !== undefined ? String(answers[cat.minId]) : ''}
               onChange={e => set(cat.minId, e.target.value === '' ? '' : Number(e.target.value))}
               style={{
                 padding:'10px 14px', fontSize:'18px', fontWeight:600,
-                border:`1px solid ${answers[cat.minId] !== undefined && answers[cat.minId] !== '' ? cat.color : '#d4cdc4'}`,
-                outline:'none', background:'transparent', fontFamily:'Heebo,sans-serif',
+                border:`1px solid ${answers[cat.minId] !== undefined && answers[cat.minId] !== '' ? cat.color : 'rgba(54,51,48,.12)'}`,
+                outline:'none', background:'transparent', fontFamily:'var(--font-body)',
                 width:'100%', direction:'ltr', textAlign:'center',
                 WebkitAppearance:'none', boxSizing:'border-box',
                 color: cat.color,
@@ -595,33 +596,55 @@ export default function QuestionnairePage() {
   }
  
   return (
-    <div style={{minHeight:'100vh',background:'#f0ebe3',overflowX:'hidden'}}>
+    <div style={{minHeight:'100vh',background:'var(--off-white)',overflowX:'hidden'}}>
  
       {/* Progress bar */}
-      <div style={{position:'fixed',top:0,right:0,left:0,height:'3px',background:'#e8e2d9',zIndex:50}}>
-        <div style={{height:'100%',width:`${pct}%`,background:'#8b4a2f',transition:'width .5s'}} />
+      <div style={{position:'fixed',top:0,right:0,left:0,height:'2px',background:'rgba(54,51,48,.1)',zIndex:100}}>
+        <div style={{height:'100%',width:`${pct}%`,background:'var(--evergreen)',transition:'width .6s cubic-bezier(0.4,0,0.2,1)'}} />
+      </div>
+ 
+      {/* Top bar */}
+      <div style={{
+        position:'fixed',top:2,right:0,left:0,
+        background:'rgba(241,239,232,.92)',
+        backdropFilter:'blur(12px)',
+        WebkitBackdropFilter:'blur(12px)',
+        borderBottom:'1px solid rgba(54,51,48,.07)',
+        padding:'14px 24px',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-between',
+        zIndex:49,
+      }}>
+        <TomorrowLogo color="var(--soft-black)" height={14} style={{opacity:0.6}} />
+        <p style={{fontFamily:'var(--font-body)',fontSize:'11px',letterSpacing:'2px',color:'var(--warm-taupe)',textTransform:'uppercase' as const}}>
+          {String(secIdx+1).padStart(2,'0')} / {String(total).padStart(2,'0')}
+        </p>
       </div>
  
       <div style={{
         maxWidth:'680px', margin:'0 auto',
-        padding:'20px 16px 80px',
+        padding:'90px 20px 100px',
         boxSizing:'border-box', width:'100%',
       }}>
  
         {/* Section header */}
-        <div style={{background:'#1a1512',padding:'24px',marginBottom:'20px'}}>
-          <p style={{fontSize:'10px',letterSpacing:'2px',textTransform:'uppercase',color:'#6b6055',marginBottom:'10px',fontFamily:'Heebo,sans-serif'}}>
-            {secIdx+1} / {total}
+        <div style={{background:'var(--soft-black)',padding:'28px 24px 22px',marginBottom:'24px'}}>
+          <p style={{
+            fontFamily:'var(--font-body)',fontSize:'10px',letterSpacing:'3px',
+            textTransform:'uppercase',color:'var(--muted-stone)',marginBottom:'12px',
+          }}>
+            {String(secIdx+1).padStart(2,'0')} — {sec.en}
           </p>
-          <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-            
-            <div>
-              <h2 style={{fontFamily:'Playfair Display,serif',color:'#fff',fontSize:'22px',fontWeight:400,marginBottom:'2px'}}>
-                {sec.title}
-              </h2>
-              <p style={{fontSize:'11px',color:'#6b6055',fontFamily:'Heebo,sans-serif'}}>{sec.en}</p>
-            </div>
-          </div>
+          <h2 style={{
+            fontFamily:'var(--font-display)',
+            color:'var(--soft-white)',
+            fontSize:'clamp(24px, 4vw, 32px)',
+            fontWeight:400,
+            letterSpacing:'-0.01em',
+          }}>
+            {sec.title}
+          </h2>
         </div>
  
         {/* Validation error */}
@@ -629,7 +652,7 @@ export default function QuestionnairePage() {
           <div style={{
             background:'rgba(185,28,28,.1)', border:'1px solid rgba(185,28,28,.3)',
             padding:'12px 16px', marginBottom:'16px',
-            color:'#c53030', fontFamily:'Heebo,sans-serif', fontSize:'13px',
+            color:'#c53030', fontFamily:'var(--font-body)', fontSize:'13px',
             textAlign:'right',
           }}>
             יש לענות על כל השאלות לפני המעבר לשלב הבא
@@ -646,28 +669,27 @@ export default function QuestionnairePage() {
           : sec.questions.map(q => renderQ(q))
         }
  
-        {/* Navigation */}
-        <div style={{display:'flex',gap:'10px',marginTop:'24px'}}>
+        {/* Navigation — fixed bottom bar */}
+        <div style={{height:'72px'}} />{/* spacer */}
+        <div style={{
+          position:'fixed',
+          bottom:0, left:0, right:0,
+          background:'rgba(241,239,232,.92)',
+          backdropFilter:'blur(12px)',
+          WebkitBackdropFilter:'blur(12px)',
+          borderTop:'1px solid rgba(54,51,48,.08)',
+          padding:'14px 20px',
+          display:'flex',
+          gap:'8px',
+          zIndex:50,
+        }}>
           {secIdx > 0 && (
-            <button onClick={goBack}
-              style={{
-                flex:1, padding:'14px',
-                fontSize:'14px', fontFamily:'Heebo,sans-serif',
-                background:'transparent',
-                border:'1px solid #d4cdc4', color:'#6b6055',
-                cursor:'pointer',
-              }}>
+            <button onClick={goBack} className="btn-back" style={{flex:1}}>
               חזרה
             </button>
           )}
-          <button onClick={goNext}
-            style={{
-              flex:2, padding:'14px',
-              fontSize:'14px', fontFamily:'Heebo,sans-serif',
-              background:'#8b4a2f', color:'#fff',
-              border:'none', cursor:'pointer',
-            }}>
-            {secIdx === total-1 ? 'שלח שאלון' : 'הבא'}
+          <button onClick={goNext} className="btn-next" style={{flex:2}}>
+            {secIdx === total-1 ? 'שלח שאלון' : 'המשך'}
           </button>
         </div>
       </div>
