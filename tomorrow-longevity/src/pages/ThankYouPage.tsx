@@ -1,82 +1,99 @@
+import { TomorrowLogo } from '@/TomorrowLogo'
+ 
 export default function ThankYouPage() {
   return (
     <div style={{
-      minHeight:'100vh', background:'#1a1512',
-      display:'flex', flexDirection:'column',
-      alignItems:'center', justifyContent:'center',
-      padding:'40px 24px', textAlign:'center',
-    }}>
+      minHeight: '100vh',
+      background: 'var(--off-white)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '64px 24px',
+      textAlign: 'center',
+    }} className="anim-in">
  
       {/* Logo */}
-      <div style={{marginBottom:'48px'}}>
-        <h1 style={{
-          fontFamily:'Playfair Display,serif',
-          fontSize:'clamp(40px,8vw,72px)',
-          fontWeight:300, letterSpacing:'.15em',
-          color:'#fff', marginBottom:'8px',
-        }}>TOMORROW</h1>
-        <p style={{
-          fontSize:'11px', letterSpacing:'3px',
-          textTransform:'uppercase', color:'#6b6055',
-          fontFamily:'Heebo,sans-serif',
-        }}>The science of better living</p>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '56px' }}>
+        <TomorrowLogo color="var(--soft-black)" height={18} style={{ opacity: 0.45 }} />
       </div>
  
       {/* Check mark */}
       <div style={{
-        width:'72px', height:'72px', borderRadius:'50%',
-        background:'rgba(201,168,76,.15)',
-        border:'2px solid #c9a84c',
-        display:'flex', alignItems:'center', justifyContent:'center',
-        fontSize:'32px', marginBottom:'32px',
+        width: 72, height: 72,
+        borderRadius: '50%',
+        border: '1px solid var(--evergreen)',
+        background: 'rgba(35,53,43,.07)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '32px',
+        position: 'relative',
       }}>
-        ✓
+        <div style={{
+          position: 'absolute', inset: 10,
+          borderRadius: '50%',
+          background: 'rgba(35,53,43,.05)',
+        }} />
+        <svg width="24" height="18" viewBox="0 0 24 18" fill="none" style={{ position: 'relative', zIndex: 1 }}>
+          <path d="M2 9L9 16L22 2" stroke="var(--evergreen)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </div>
  
-      {/* Message */}
-      <h2 style={{
-        fontFamily:'Playfair Display,serif',
-        fontSize:'clamp(22px,5vw,32px)',
-        fontWeight:300, color:'#fff',
-        marginBottom:'16px',
+      <p style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: '10px',
+        letterSpacing: '3.5px',
+        textTransform: 'uppercase',
+        color: 'var(--muted-stone)',
+        marginBottom: '16px',
       }}>
-        תודה שמילאת את השאלון
+        Assessment Complete
+      </p>
+ 
+      <h2 style={{
+        fontFamily: 'var(--font-display)',
+        fontSize: 'clamp(26px, 4vw, 42px)',
+        fontWeight: 400,
+        color: 'var(--soft-black)',
+        marginBottom: '16px',
+        letterSpacing: '-0.01em',
+        lineHeight: 1.18,
+      }}>
+        תודה שהשקעת<br />
+        ב<em style={{ fontStyle: 'italic', color: 'var(--warm-taupe)' }}>עצמך</em>
       </h2>
  
       <p style={{
-        fontFamily:'Heebo,sans-serif',
-        fontSize:'16px', fontWeight:300,
-        color:'rgba(255,255,255,.6)',
-        marginBottom:'12px', lineHeight:1.7,
-        maxWidth:'400px',
+        fontFamily: 'var(--font-body)',
+        fontSize: '15px',
+        fontWeight: 300,
+        color: 'var(--warm-taupe)',
+        lineHeight: 1.75,
+        maxWidth: '360px',
+        marginBottom: '44px',
       }}>
-        התשובות שלך נשלחו לצוות הרפואי של טומורו.
-      </p>
- 
-      <p style={{
-        fontFamily:'Heebo,sans-serif',
-        fontSize:'16px', fontWeight:300,
-        color:'rgba(255,255,255,.6)',
-        marginBottom:'48px', lineHeight:1.7,
-        maxWidth:'400px',
-      }}>
-        הרופא יעבור בהקדם על התשובות.
+        תשובותיך התקבלו ועוברות כעת עיבוד על ידי צוות TOMORROW.<br />
+        הרופא יפנה אליך בהקדם עם תובנות מותאמות אישית.
       </p>
  
       {/* Divider */}
       <div style={{
-        width:'40px', height:'1px',
-        background:'rgba(201,168,76,.4)',
-        marginBottom:'32px',
+        width: 1,
+        height: 48,
+        background: 'linear-gradient(to bottom, rgba(54,51,48,.2), transparent)',
+        marginBottom: '32px',
       }} />
  
       <p style={{
-        fontFamily:'Heebo,sans-serif',
-        fontSize:'13px', color:'rgba(255,255,255,.25)',
+        fontFamily: 'var(--font-body)',
+        fontSize: '11px',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
+        color: 'rgba(118,106,96,.35)',
       }}>
-        שאלות? צור קשר עם הצוות
+        TOMORROW — Movement Group
       </p>
- 
     </div>
   )
 }
